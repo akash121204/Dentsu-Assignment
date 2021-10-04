@@ -165,7 +165,9 @@ class Flows extends React.Component<IProps, IState> {
             resposne.forEach((element: ProcessFlows) => {
                 HttpService.get(`flow/${element.id}`).then((result: Process[]) => {
                     apiResponse.push(...result);
-                    this.createNodesAndEdges(apiResponse);
+                    if(apiResponse) {
+                        this.createNodesAndEdges(apiResponse);
+                    }
                 });
             });
         });
