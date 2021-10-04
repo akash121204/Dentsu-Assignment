@@ -200,7 +200,9 @@ class Flows extends React.Component<IProps, IState> {
         });
 
         const ids = nodes.map(o => o.id);
-        let filteredNodes: Node[] = nodes.filter(({ id }, index) => !ids.includes(id, index + 1))
+        let filteredNodes: Node[] = nodes.filter(({ id }, index) => !ids.includes(id, index + 1))   
+
+        filteredNodes = this.setPositionOfNodes(filteredNodes);
 
         const edges: Edge[] = [];
 
@@ -214,9 +216,7 @@ class Flows extends React.Component<IProps, IState> {
                 label: `E${element.fromProcessId}-${element.toProcessId}`,
                 arrowHeadType: 'arrowclosed'
             })
-        });        
-
-        filteredNodes = this.setPositionOfNodes(filteredNodes);
+        });     
     
         const elements = [...filteredNodes, ...edges];
 
