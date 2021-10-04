@@ -10,11 +10,9 @@ class Flows extends React.Component<IProps, IState> {
         this.state = {
             elements: []
         };
-
-        this.createNodesAndEdges = this.createNodesAndEdges.bind(this);
     }
 
-    onElementClick = (event: any, element: any) => {
+    onElementClick = (element: any) => {
         HttpService.get(`flow/process/${element.id}`).then((response: any) => {
             window.confirm(`Name: ${response.name}, Average Duration: ${response.avgDuration}, Description: ${response.description}`);
         });
@@ -202,8 +200,30 @@ class Flows extends React.Component<IProps, IState> {
         });
 
         const ids = nodes.map(o => o.id);
-        const filteredNodes: Node[] = nodes.filter(({ id }, index) => !ids.includes(id, index + 1))
+        let filteredNodes: Node[] = nodes.filter(({ id }, index) => !ids.includes(id, index + 1))
 
+        const edges: Edge[] = [];
+
+        apiResponse.forEach((element: Process) => {
+            edges.push({
+                id: `e${element.fromProcessId}-${element.toProcessId}`,
+                source: element.fromProcessId.toString(),
+                target: element.toProcessId.toString(),
+                animated: true,
+                type: 'default',
+                label: `E${element.fromProcessId}-${element.toProcessId}`,
+                arrowHeadType: 'arrowclosed'
+            })
+        });        
+
+        filteredNodes = this.setPositionOfNodes(filteredNodes);
+    
+        const elements = [...filteredNodes, ...edges];
+
+        this.setState({ elements });
+    }
+
+    setPositionOfNodes(filteredNodes: Node[]) {
         let positions: any = [];
 
         if (window.innerWidth >= 320 && window.innerWidth < 640) {
@@ -240,23 +260,7 @@ class Flows extends React.Component<IProps, IState> {
             filteredNodes[i].position = positions[i];
         }
 
-        const edges: Edge[] = [];
-
-        apiResponse.forEach((element: Process) => {
-            edges.push({
-                id: `e${element.fromProcessId}-${element.toProcessId}`,
-                source: element.fromProcessId.toString(),
-                target: element.toProcessId.toString(),
-                animated: true,
-                type: 'default',
-                label: `E${element.fromProcessId}-${element.toProcessId}`,
-                arrowHeadType: 'arrowclosed'
-            })
-        });
-
-        const elements = [...filteredNodes, ...edges];
-
-        this.setState({ elements });
+        return filteredNodes;
     }
 
     render() {
