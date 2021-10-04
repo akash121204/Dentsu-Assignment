@@ -1,7 +1,7 @@
-import Header from './Header/header';
-import Footer from './Footer/footer';
+import Header from './components/Header/header';
+import Footer from './components/Footer/footer';
 import './App.css';
-import Flows from './Flows/flows';
+import Flows from './components/Flows/flows';
 import {
   BrowserRouter as Router, Switch,
   Route,

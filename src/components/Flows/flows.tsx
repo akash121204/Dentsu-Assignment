@@ -1,7 +1,7 @@
 import React from "react";
-import { HttpService } from "../services/HttpServices";
+import { HttpService } from "../../services/HttpServices";
 import ReactFlow from 'react-flow-renderer';
-import { IProps, IState, Process, Node, Edge, ProcessFlows } from '../Interfaces/interface';
+import { IProps, IState, Process, Node, Edge, ProcessFlows } from '../../Interfaces/interface';
 
 class Flows extends React.Component<IProps, IState> {
     constructor(props: IProps) {
